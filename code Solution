@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+
+        int lastIndex = nums.size() - 1;
+
+        for (int i = 0; i < lastIndex; i++) {
+            // Check if current position plus maximum jump from this position can reach or exceed last index
+            if (i + nums[i] >= lastIndex) {
+                return true;
+            }
+            // If nums[i] is 0, attempt to find a position before it which can jump over it
+            if (nums[i] == 0 && lastIndex != 0) {
+                int j = i - 1;
+                // Move backwards and find a position which can jump over 0
+                while (j >= 0 && nums[j] <= i - j) {
+                    j--;
+                }
+                // If we can't find any position to jump over 0, return false
+                if (j < 0) return false;
+            }
+        }
+        // If the size of nums is 1, it means there's only one element in nums, so it's reachable by default
+        return nums.size() == 1;
+    }
+
+
+};
+int main()
+{
+    Solution s;
+    vector<int> v{ 3,0,8,2,0,0,1 };
+    bool result = s.canJump(v);
+    if (result == true)
+        cout << "true";
+    else
+        cout << "false";
+    return 0;
+}
